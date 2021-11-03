@@ -38,8 +38,13 @@ function getCvsOutdoorRisk(request) {
             let risk = 1
             for (let arg in kwargs) {
                 if (arg in effects){
-                    let arg_risk = risk_evaluation(kwargs[arg] -safeLevels[arg], effects[arg]) 
-                    risk *= (1+arg_risk)
+                    if (kwargs[arg] > safeLevels[arg]) {
+                        let arg_risk = risk_evaluation(kwargs[arg] -safeLevels[arg], effects[arg]) 
+                        risk *= (1+arg_risk)
+                    }
+                    else {
+                        risk = 1
+                    }
                 }
             }
             return Math.round((risk-1)*100)
