@@ -22,6 +22,13 @@ function getCvsOutdoorRisk(request) {
             "o3": 0.004,
             "no2": 0.01,
         }
+        
+        const safeLevels = {
+            "pm25": 0.010,
+            "pm10":  0.020,
+            "o3": 0.030,
+            "no2": 0.020,
+        }
         function risk_evaluation(param,param_effect){
             let param_level = param /10
             return Math.pow(1+param_effect,param_level)-1
@@ -31,7 +38,7 @@ function getCvsOutdoorRisk(request) {
             let risk = 1
             for (let arg in kwargs) {
                 if (arg in effects){
-                    let arg_risk = risk_evaluation(kwargs[arg], effects[arg]) 
+                    let arg_risk = risk_evaluation(kwargs[arg] -safeLevels[arg], effects[arg]) 
                     risk *= (1+arg_risk)
                 }
             }
